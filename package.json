@@ -1,0 +1,38 @@
+{
+  "name": "lendthings",
+  "version": "1.1.0",
+  "description": "Keep track of what you have and see what others have",
+  "author": "Doris Chiu",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cdcjj/MVP.git"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "start": "nodemon --ignore node_modules index.js",
+    "lint": "eslint ./"
+  },
+  "dependencies": {
+    "bookshelf": "^0.10.3",
+    "chai": "^3.5.0",
+    "express": "^4.15.2",
+    "knex": "^0.12.9",
+    "nodemon": "^1.11.0",
+    "request": "^2.81.0",
+    "sqlite3": "^3.1.8"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3",
+    "mocha": "^3.3.0"
+  }
+}
