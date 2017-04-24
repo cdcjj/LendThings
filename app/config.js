@@ -38,18 +38,18 @@ db.knex.schema.hasTable('inventory').then(exists => {
 });
 
 
-db.knex.schema.hasTable('categories').then(exists => {
+db.knex.schema.hasTable('category').then(exists => {
   if (!exists) {
-    db.knex.schema.createTable('categories', category => {
+    db.knex.schema.createTable('category', category => {
       category.increments('id').primary();
       category.string('name', 255);
     });
   }
 });
 
-db.knex.schema.hasTable('users_categories').then(exists => {
+db.knex.schema.hasTable('users_category').then(exists => {
   if (!exists) {
-    db.knex.schema.createTable('users_categories', table => {
+    db.knex.schema.createTable('users_category', table => {
       table.increments().primary();
       table.integer('user_id').unsigned();
       table.integer('category_id').unsigned();
