@@ -24,6 +24,7 @@
     "express-partials": "^0.3.0",
     "express-session": "^1.15.2",
     "knex": "^0.12.9",
+    "morgan": "^1.8.1",
     "nodemon": "^1.11.0",
     "passport-google": "^0.3.0",
     "request": "^2.81.0",
