@@ -9,13 +9,16 @@ let knex = require('knex') ({
 
 let db = require('bookshelf')(knex);
 
-db.knex.schema.createTableIfNotExists('urls', user => {
+db.knex.schema.createTableIfNotExists('users', user => {
   user.increments('id').primary();
   user.string('username', 20).unique();
   user.string('password', 20)
 })
 .then(table => {
-  console.log(`Created table: ${table}`);
+  console.log(`Created table: users${table}`);
+})
+.catch(function(table) {
+  console.log('users table already created');
 });
 
 db.knex.schema.createTableIfNotExists('inventory', function(inventory) {
@@ -29,7 +32,10 @@ db.knex.schema.createTableIfNotExists('inventory', function(inventory) {
   inventory.foreign('category_id').references('users.id');
 })
 .then(function(table) {
-  console.log(`Created table: ${table}`);
+  console.log(`Created table: inventory ${table}`);
+})
+.catch(function(table) {
+  console.log('inventory table already created');
 });
 
 
@@ -38,7 +44,10 @@ db.knex.schema.createTable('category', function(category) {
   category.string('name', 255);
 })
 .then(table => {
-  console.log(`Created table: ${table}`);
+  console.log(`Created table: category ${table}`);
+})
+.catch(function(table) {
+  console.log('category table already created');
 });
 
 db.knex.schema.createTableIfNotExists('users_category', function(table) {
@@ -49,7 +58,10 @@ db.knex.schema.createTableIfNotExists('users_category', function(table) {
   table.foreign('category_id').references('categories.id');
 })
 .then(function(table) {
-  console.log(`Created table: ${table}`);
+  console.log(`Created table: users_category ${table}`);
+})
+.catch(function(table) {
+  console.log('users_category table already created');
 });
 
 module.exports = db;
