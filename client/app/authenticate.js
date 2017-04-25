@@ -1,5 +1,5 @@
 angular.module('myApp.authenticate', [])
-.controller('Authenticate', ($scope, $http, $location) => {
+.controller('Authenticate', function($scope, $http, $window, $location) {
   $scope.user = {};
 
   $scope.login = function () {
@@ -9,6 +9,7 @@ angular.module('myApp.authenticate', [])
       data: user
     }).then(res => {
       console.log('login successful');
+
       $location.path('/inventory');
     }).catch(e => {
       console.log('Error: ', e);
@@ -26,6 +27,9 @@ angular.module('myApp.authenticate', [])
     }).catch(e => {
       console.log('Error: ', e);
     })
-  }
+  },
   // reset() method that clears all fields needed here
+  $scope.signout = function() {
+
+  }
 });

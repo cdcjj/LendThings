@@ -1,5 +1,6 @@
 let db = require('../config.js');
-let User = require('./user.js');
+let User = require('../user/user');
+let Inventory = require('../inventory/inventory');
 
 let Category = db.Model.extend({
   tableName: 'category',
@@ -11,5 +12,4 @@ let Category = db.Model.extend({
   }
 });
 
-
-modules.exports = Category;
+module.exports = Category;

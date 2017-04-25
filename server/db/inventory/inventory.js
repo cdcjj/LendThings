@@ -1,5 +1,6 @@
 let db = require('../config.js');
-let User = require('./user.js');
+let User = require('../user/user');
+let Category = require('../category/category');
 
 let Inventory = db.Model.extend({
   tableName: 'inventory',
@@ -8,8 +9,8 @@ let Inventory = db.Model.extend({
   },
   category: () => {
     return this.belongsTo(Category, 'category_id');
-  }),
+  }
 });
 
 
-modules.exports = Inventory;
+module.exports = Inventory;

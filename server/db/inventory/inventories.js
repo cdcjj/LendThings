@@ -2,8 +2,8 @@ let db = require('../config');
 let Inventory = require('./inventory');
 
 let Inventories = db.Collection.extend({
-  model: Iventory
+  model: Inventory
 });
 
 
-modules.exports = Inventories; 
+module.exports = Inventories;

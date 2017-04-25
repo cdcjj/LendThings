@@ -1,20 +1,20 @@
-const express = require('express');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const session = require('express-session');
+let express = require('express');
+let morgan = require('morgan');
+let bodyParser = require('body-parser');
+let session = require('express-session');
 
 let db = require('./db/config');
-let User = require('./db/users/user');
-let Users = require('./db/users/users');
+let User = require('./db/user/user');
+let Users = require('./db/user/users');
 let Category = require('./db/category/category');
 let Categories = require('./db/category/categories');
 let Inventory = require('./db/inventory/inventory');
 let Inventories = require('./db/inventory/inventories');
 
 let app = express();
-app.use(moregan('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
-app.use(bodyParsert.urlencoded({extend: true}));
+app.use(bodyParser.urlencoded({extend: true}));
 app.use(express.static(__dirname + '../client'));
 app.use(session({
   secret: 'keyboard corgi',
@@ -118,7 +118,7 @@ app.post('/signup', (req, res) => {
           .then(user => {
             req.session.user = user;
             res.redirect('/inventory');
-          }
+          });
       } else {
         console.log('username already taken');
         res.redirect('/signup');
@@ -128,12 +128,12 @@ app.post('/signup', (req, res) => {
 
 module.exports = app;
 
-
-req.session.destroy(function)(err) {
-  // destroy
-  // redirect
-}
-
-req.session.regenerate(function(err) {
-  // will have new session here.
-})
+//
+// req.session.destroy(function)(err) {
+//   // destroy
+//   // redirect
+// }
+//
+// req.session.regenerate(function(err) {
+//   // will have new session here.
+// })
