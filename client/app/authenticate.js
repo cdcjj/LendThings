@@ -4,7 +4,6 @@ angular.module('myApp.authenticate', [])
   $scope.message = '';
 
   $scope.login = function () {
-    console.log('authenticate.js: ', $scope.user);
     Auth.login($scope.user)
       .then(id => {
         $window.localStorage.setItem('auth', id);

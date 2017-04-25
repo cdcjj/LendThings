@@ -1,8 +1,51 @@
 <div id="container">
+  <div class='sidebar category'>Categories:
+    <div class="category" ng-repeat="cate in data.categories | orderBy: name">
+      <p ng-click="getInventory(cate.name)">{{cate.name}}</a></p>
+    </div>
+    <a class="invent" ng-click="isCateFormOpen = !isCateFormOpen">Add Category</a>
+    <div ng-show="isCateFormOpen" id="cateForm">
+      <form class="invent" name="categoryForm" ng-submit="addCategory()">
+        <label> Category Name </label>
+        <input type='text' name="name" ng-model='category.name' required>
+        <p class="error2" ng-show="categoryForm.name.$error.required">Name Required</p>
+        <button>Add Category</button>
+        <div>{{message.category}}</div>
+      </form>
+    </div>
+  </div>
   <div class="inventory">
-    <div ng-controller="InventoryController" class="info">
-      <ul>
-        <li ng-click='category()'><li>
+    <h1>Inventory</h1>
+    <div ng-controller="InventoryController">
+      <a class="invent" ng-click="isAddFormOpen = !isAddFormOpen">Add New Item</a>
+      <div ng-show="isAddFormOpen" id="addForm">
+        <form class="invent" name="inventoryForm" ng-submit='addInventory()'>
+           <label>Name of Item:</label>
+           <input type='text' name="name" ng-model='inventory.name' required>
+           <p class="error2" ng-show="inventoryForm.name.$error.required">Name Required</p>
+
+           <label>Amount:</label>
+           <input type='number' name="amount" ng-model='inventory.amount' placeholder="how many do you have?" required>
+           <p class="error2" ng-show="inventoryForm.amount.$error.required">Required</p>
+
+           <label>Category:</label>
+           <input type='text' name="category" ng-model='inventory.category' placeholder="category item belongs in" required>
+           <p class="error2" ng-show="inventoryForm.category.$error.required">Category Required</p>
+
+           <label>Date:</label>
+           <input type='date' name="date" ng-model='inventory.date'>
+
+           <button>Add Item</button>
+           <div>{{message.inventory}}</div>
+         </form>
+      </div>
+    </div>
+    <div class="items" ng-repeat="item in data.inventory | orderBy: name">
+      <div class="info">
+        <div class="name">{{ item.name }}</div>
+        <div class="amount">{{ item.amount}}</div>
+        <div class="date">{{ item.date}}</div>
+      </div>
     </div>
   </div>
 </div>

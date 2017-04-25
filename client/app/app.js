@@ -19,7 +19,7 @@ var app = angular.module('myApp', [
     controller: 'AuthenticateController'
   })
   .when('/inventory', {
-    templateURL: "app/views/inventory.html",
+    templateUrl: "app/views/inventory.html",
     controller: 'InventoryController'
   })
   .otherwise('/', {

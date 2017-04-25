@@ -28,48 +28,112 @@ app.use(session({
 }));
 
 
-// app.get('/api/inventory', loggedIn, (req, res) => {
-//   // render inventory page
-// });
-//
-// app.post('/inventory', (req, res) => {
-//   let name = req.body.name;
-//   let date = req.body.date;
-//   let amount = req.body.amount;
-//   let category = req.body.category;
-//   let user_id = req.session.user.get('id');
-//
-//   new Categories({name: category}).fetch()
-//     .then(catModel => {
-//       if (catModel === null) {
-//         // create new category
-//         Categories.create({
-//           name: category
-//         }).save()
-//           .then(catModel => {
-//             category = catModel.get('id');
-//           });
-//       } else {
-//         category = catModel.get('id');
-//       }
-//     })
-//     .then(() => {
-//       new Inventories({name: name}).fetch()
-//         .then(thing => {
-//           if (thing === null) {
-//             // create new inventory object
-//             Inventories.create({
-//               name: name,
-//               date: date,
-//               amount: amount,
-//               user_id: user_id,
-//               category_id: category
-//             }).save()
-//           }
-//         })
-//     })
-// });
-//
+app.get('/api/category', (req, res, next) =>{
+  new Category({}).fetchAll()
+    .then(categories => {
+      res.json(categories);
+    })
+    .catch(err => {
+      next();
+    });
+});
+
+app.post('/api/category', (req, res, next) => {
+  let name = req.body.name;
+  new Category({name: name}).fetch()
+    .then(category => {
+      if (category === null) {
+        // create new category
+        var newCategory = new Category({
+          name: name
+        });
+        newCategory.save()
+          .then(catModel => {
+            res.json(catModel);
+          });
+      } else {
+        return next(new Error('Category Already Exists'));
+      }
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
+app.get('/api/inventory', (req, res, next) => {
+  let cat_id;
+
+  new Category(req.query).fetch()
+    .then(catModel => {
+      console.log('catModel', catModel);
+      if (catModel === null) {
+        return next(new Error('no Category found'));
+      } else {
+        cat_id = catModel.get('id');
+      }
+    })
+    .then(() => {
+      new Inventory({category_id: cat_id }).fetchAll()
+      .then(things => {
+        console.log(things);
+        res.json(things);
+      })
+      .catch(err => {
+        next();
+      })
+    })
+
+});
+
+app.post('/api/inventory', (req, res) => {
+  let name = req.body.name;
+  let date = req.body.date;
+  let amount = req.body.amount;
+  let category = req.body.category;
+  let user_id = req.body.user_id;
+
+  new Category({name: category}).fetch()
+    .then(catModel => {
+      if (catModel === null) {
+        // create new category
+        var newCategory = new Category({
+          name: category
+        });
+        newCategory.save()
+          .then(catModel => {
+            category = catModel.get('id');
+          });
+      } else {
+        category = catModel.get('id');
+      }
+    })
+    .then(() => {
+      new Inventory({name: name}).fetch()
+        .then(thing => {
+          if (thing === null) {
+            // create new inventory object
+            var newInventory = new Inventory({
+              name: name,
+              date: date,
+              amount: amount,
+              user_id: user_id,
+              category_id: category
+            });
+            newInventory.save()
+            .then(inventory => {
+              res.json(inventory);
+            })
+          }
+        })
+        .catch(error => {
+          next(error);
+        });
+    })
+    .catch(error => {
+      next(error);
+    });
+});
+
 app.post('/api/login', (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
