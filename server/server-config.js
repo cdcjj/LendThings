@@ -65,22 +65,18 @@ app.get('/api/inventory', (req, res, next) => {
 
   new Category(req.query).fetch()
     .then(catModel => {
-      console.log('catModel', catModel);
       if (catModel === null) {
         return next(new Error('no Category found'));
       } else {
         cat_id = catModel.get('id');
+        new Inventory({category_id: cat_id }).fetchAll()
+        .then(things => {
+          res.json(things.models);
+        })
+        .catch(err => {
+          next();
+        })
       }
-    })
-    .then(() => {
-      new Inventory({category_id: cat_id }).fetchAll()
-      .then(things => {
-        console.log(things);
-        res.json(things);
-      })
-      .catch(err => {
-        next();
-      })
     })
 
 });

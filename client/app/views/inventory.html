@@ -42,9 +42,9 @@
     </div>
     <div class="items" ng-repeat="item in data.inventory | orderBy: name">
       <div class="info">
-        <div class="name">{{ item.name }}</div>
-        <div class="amount">{{ item.amount}}</div>
-        <div class="date">{{ item.date}}</div>
+        <p class="name"><strong>{{ item.name }}</strong></p>
+        <p class="amount">Amount: {{ item.amount}}</p>
+        <p class="date">Date: {{ item.date }}</p>
       </div>
     </div>
   </div>

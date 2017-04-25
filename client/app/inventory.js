@@ -48,8 +48,4 @@ angular.module('myApp.inventory', [])
         $scope.data.inventory = items;
       })
   };
-
-  // display none on render
-
-  // reset() method that clears all fields needed here
 });

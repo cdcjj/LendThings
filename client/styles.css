@@ -175,3 +175,16 @@ form.invent {
 	color: pink;
 	font-size: 20px;
 }
+
+.items {
+	background-color: lightblue;
+	color: black;
+}
+
+.items p {
+	font-size: 15px;
+}
+
+strong {
+	font-weight: 600;
+}
