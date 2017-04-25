@@ -50,3 +50,83 @@ table {
 
 
 /* Custom styles */
+body {
+	margin: 0;
+	margin-top: 5px;
+	font-family: arial, helvetica;
+	background: url('cosmos-star-background.jpg') no-repeat center center fixed;
+	background-size: cover;
+	color: white;
+}
+
+a {
+	color: white;
+	font-size: 20px;
+	text-decoration-style: dotted;
+	background-color: darkblue;
+}
+
+h1 {
+	font-size: 35px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+div {
+	font-size: 35px;
+	margin: 10px 10px;
+	padding: 10px;
+}
+
+.authenticate {
+	clear: both;
+	margin-top: 10px;
+	padding: 10px;
+}
+
+
+.nav {
+	border-style: dashed;
+	border-color: blue;
+	width: 40%;
+	height: 30px;
+	background-color: #b38f00;
+	color: white;
+	float: right;
+}
+
+.nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.nav li {
+	float: right;
+}
+
+.nav li a {
+	color: black;
+	font-size: 20px;
+	width: 100px;
+	height: 20px;
+	line-height: 20px;
+	padding: 5px;
+	display: block;
+	text-align: center;
+	background-color: #b38f00;
+}
+label {
+	font-size: 20px;
+	display: block;
+}
+
+input {
+	margin: 5px 5px;
+	padding-bottom: 5px;
+}
+
+.error {
+	font-size: 10px;
+  color: red;
+}

@@ -1,28 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app='myApp'>
  <head>
    <meta charset ="utf-8">
 
    <title>LendThings</title>
    <meta name="description" content="LendThings">
 
-   <link rel="stylesheet" href="css/styles.css">
+   <link rel="stylesheet" href="styles.css">
  </head>
  <body>
    <h1>Inventory/Lend your things</h1>
-   <div class="nav">
-     <ul>
-       <li><a href='#/inventory'>Links</a></li>
-       <li><a href='#/user'>Users</a></li>
-     </ul>
-   </div>
-   
    <div ng-view></div>
 
-   <script src="../bower_components/angular/angular.js"></script>
-   <script src="./services/services.js"></script>
-   <script src="./app/authenticate.js"></script>
-   <script src="./app/inventory.js"></script>
-   <script src="./app/app.js"></script>
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/angular-route/angular-route.js"></script>
+   <script src="services/services.js"></script>
+   <script src="app/authenticate.js"></script>
+   <script src="app/inventory.js"></script>
+   <script src="app/app.js"></script>
  </body>
 </html>

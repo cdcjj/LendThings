@@ -1,22 +1,29 @@
 var app = angular.module('myApp', [
   'myApp.services',
   'myApp.authenticate',
-  'myApp.inventory'
+  'myApp.inventory',
+  'ngRoute'
 ])
-.config(($routeProvider) {
+.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  $locationProvider.html5Mode({
+    enabled: true,
+    // requireBase: false
+  });
   $routeProvider
   .when('/login', {
-    templateUrl: "login.html",
-    controller: ""
+    templateUrl: "app/views/login.html",
+    controller: 'AuthenticateController'
   })
-  .when('/signup' {
-    templateURL: "signup.html",
-    controller: ""
+  .when('/signup', {
+    templateURL: "app/views/signup.html",
+    controller: 'AuthenticateController'
   })
   .when('/inventory', {
-
+    templateURL: "app/views/inventory",
+    controller: 'InventoryController'
   })
   .otherwise('/', {
     redirectTo: '/inventory',
-  })
-})
+  });
+
+}]);

@@ -1,4 +1,5 @@
 let express = require('express');
+let path = require('path');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
 let session = require('express-session');
@@ -12,10 +13,13 @@ let Inventory = require('./db/inventory/inventory');
 let Inventories = require('./db/inventory/inventories');
 
 let app = express();
+app.engine('html', require('ejs').renderFile);
+app.set('views', path.join(__dirname + './../client/app/views'));
+app.set('view engine', 'html');
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extend: true}));
-app.use(express.static(__dirname + '../client'));
+app.use(express.static(path.join(__dirname + './../client')));
 app.use(session({
   secret: 'keyboard corgi',
   resave: true,
@@ -23,58 +27,50 @@ app.use(session({
   cookie: {maxAge: 3.6e+6}
 }));
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
-
-app.get('/inventory', (req, res) => {
-  // render inventory page
-});
-
-app.post('/inventory', (req, res) => {
-  let name = req.body.name;
-  let date = req.body.date;
-  let amount = req.body.amount;
-  let category = req.body.category;
-  let user_id = req.session.user.get('id');
-
-  new Categories({name: category}).fetch()
-    .then(catModel => {
-      if (catModel === null) {
-        // create new category
-        Categories.create({
-          name: category
-        }).save()
-          .then(catModel => {
-            category = catModel.get('id');
-          });
-      } else {
-        category = catModel.get('id');
-      }
-    })
-    .then(() => {
-      new Inventories({name: name}).fetch()
-        .then(thing => {
-          if (thing === null) {
-            // create new inventory object
-            Inventories.create({
-              name: name,
-              date: date,
-              amount: amount,
-              user_id: user_id,
-              category_id: category
-            }).save()
-          }
-        })
-    })
-});
-
-app.get('/login', (req, res) => {
-  // render login page
-});
-
-app.post('/login', (req, res) => {
+// app.get('/api/inventory', loggedIn, (req, res) => {
+//   // render inventory page
+// });
+//
+// app.post('/inventory', (req, res) => {
+//   let name = req.body.name;
+//   let date = req.body.date;
+//   let amount = req.body.amount;
+//   let category = req.body.category;
+//   let user_id = req.session.user.get('id');
+//
+//   new Categories({name: category}).fetch()
+//     .then(catModel => {
+//       if (catModel === null) {
+//         // create new category
+//         Categories.create({
+//           name: category
+//         }).save()
+//           .then(catModel => {
+//             category = catModel.get('id');
+//           });
+//       } else {
+//         category = catModel.get('id');
+//       }
+//     })
+//     .then(() => {
+//       new Inventories({name: name}).fetch()
+//         .then(thing => {
+//           if (thing === null) {
+//             // create new inventory object
+//             Inventories.create({
+//               name: name,
+//               date: date,
+//               amount: amount,
+//               user_id: user_id,
+//               category_id: category
+//             }).save()
+//           }
+//         })
+//     })
+// });
+//
+app.post('/api/login', (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
@@ -82,58 +78,56 @@ app.post('/login', (req, res) => {
   new User({username: username}).fetch()
     .then(user => {
       if (user === null) { // no user found in db
-        console.log('no user found')
-        res.redirect('/signup');
+        next(new Error('no user found'));
       } else { // if user found
-        user.comparePassword(password).then(isMatch => { // compare password
+        return user.comparePassword(password)
+        .then(isMatch => { // compare password
           if (isMatch) { //if matched-- redirect to inventory.
             // start session
             req.session.user = user;
-            res.redirect('/inventory');
+            res.json({session: user});
+            res
           } else {
-            console.log('invalid username and password');
-            res.redirect('/login');
+            return next(new Error('No User'));
           }
         });
       }
     })
-
+    .fail(error => {
+      next(error);
+    });
 });
 
-app.get('/signup', (req, res) => {
-  // render /signup page
-})
-app.post('/signup', (req, res) => {
+app.post('/api/signup', (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
   new User({username: username}).fetch()
     .then(user => {
       if (user === null) { // add
-        // create a new User Model
         Users.create({
           username: username,
           password: password
         }).save()
           .then(user => {
-            req.session.user = user;
-            res.redirect('/inventory');
+            req.session.regenerate(err => {
+              if (err) {
+                return next(new Error('session error'));
+              }
+              req.session.user = user;
+              res.json({session: user});
+            });
           });
       } else {
-        console.log('username already taken');
-        res.redirect('/signup');
+        return next(new Error('username already taken'));
       }
     })
+    .fail(error => {
+      next(error);
+    });
 });
 
+app.get('*', (req, res) => {
+  res.sendfile(path.join(__dirname + './../client/index.html'));
+})
 module.exports = app;
-
-//
-// req.session.destroy(function)(err) {
-//   // destroy
-//   // redirect
-// }
-//
-// req.session.regenerate(function(err) {
-//   // will have new session here.
-// })
