@@ -7,7 +7,7 @@ var app = angular.module('myApp', [
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
   $locationProvider.html5Mode({
     enabled: true,
-    // requireBase: false
+    requireBase: false
   });
   $routeProvider
   .when('/login', {
@@ -15,11 +15,11 @@ var app = angular.module('myApp', [
     controller: 'AuthenticateController'
   })
   .when('/signup', {
-    templateURL: "app/views/signup.html",
+    templateUrl: "app/views/signup.html",
     controller: 'AuthenticateController'
   })
   .when('/inventory', {
-    templateURL: "app/views/inventory",
+    templateURL: "app/views/inventory.html",
     controller: 'InventoryController'
   })
   .otherwise('/', {

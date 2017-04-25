@@ -1,10 +1,11 @@
 angular.module('myApp.services', [])
 
 .factory('Inventory', function($http) {
-  var getAll = function() {
+  var getAll = function(category) {
     return $http({
       method:'GET',
-      url: '/api/inventory'
+      url: '/api/inventory',
+      data: category
     })
     .then(function(resp) {
       return resp.data;
@@ -28,23 +29,29 @@ angular.module('myApp.services', [])
   var login = function(user) {
     return $http({
       method: 'POST',
-      url: '/api/users/login',
+      url: '/api/login',
       data: user
     })
     .then(function(resp) {
-      return resp.session.user;
+      return resp.data.session.id;
+    })
+    .catch(error => {
+      throw new Error(error);
     });
   };
 
   var signup = function(user) {
     return $http({
       method: 'POST',
-      url: '/api/users/signup',
+      url: '/signup',
       data: user
     })
     .then(function(resp) {
-      return resp.session.user;
-    });
+      return resp.data.session.id;
+    })
+    .catch(error => {
+      throw new Error(error);
+    })
   };
 
   var isLoggedIn = function () {

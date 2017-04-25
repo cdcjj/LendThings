@@ -1,4 +1,12 @@
 <div class="authenticate">
+
+  <div class="nav">
+    <ul>
+      <li><a href='#/inventory'>Inventory</a></li>
+      <li><a href='#/login'>Login</a></li>
+    </ul>
+  </div>
+
   <h1> Sign Up</h1>
   <form name="sigupForm" ng-submit="signup()">
     <label>Username</label>
@@ -8,12 +16,13 @@
     <p class='error' ng-show="signupForm.username.$error.maxlength">Must be at east 15 char long</p>
 
     <label>Password</label>
-    <input name="password" type="text" ng-model="user.password" placeholder="enter password" ng-minlength="15" ng-maxlength="15">
+    <input type="password" name="password" ng-model="user.password" placeholder="enter password" ng-minlength="8" ng-maxlength="15">
     <p class='error' ng-show="signupForm.password.$error.minlength">Must be at least 8 char long</p>
     <p class='error' ng-show="signupForm.password.$error.maxlength">Must be at east 15 char long</p>
 
-    <input type="button" ng-click="reset()" value="Reset"/>
+    <!-- <input type="button" ng-click="reset()" value="Reset"/> -->
     <button>Signup</button>
   </form>
+  <p class="message">{{message}}</p>
   <a href="/login">Already a member? Login Here</a>
 </div>

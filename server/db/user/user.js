@@ -8,20 +8,24 @@ var Category = require('../category/category');
 
 var User = db.Model.extend({
   tableName: 'users',
-  inventory: () => {
+  inventory: function() {
     return this.hasMany(Inventory);
   },
-  category: () => {
+  category: function(){
     return this.belongsToMany(Category);
   },
-  initialize: () => {
+  initialize: function() {
     this.on('creating', this.hashPassword);
   },
-  comparePassword: (attempt) => {
-    var comparer = Promise.promisify(bcrypt.compare);
-    return comparer(attempt, this.get('password'), null);
+  comparePassword: function(attempt, callback) {
+    console.log('attempt: ', attempt);
+    console.log(this.get('password'));
+    bcrypt.compare(attempt, this.get('password'), function(err, match) {
+      console.log(match);
+      callback(match);
+    });
   },
-  hashPassword: () => {
+  hashPassword: function() {
     var hasher = Promise.promisify(bcrypt.hash);
     return hasher(this.get('password'), null, null).bind(this)
       .then((hash) => {

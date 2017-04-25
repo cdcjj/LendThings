@@ -16,12 +16,13 @@
     <p class='error' ng-show="loginForm.username.$error.maxlength">Must be at east 15 char long</p>
 
     <label>Password</label>
-    <input name="password" type="text" ng-model="user.password" placeholder="enter password" ng-minlength="15" ng-maxlength="15">
+    <input type="password" name="password" ng-model="user.password" placeholder="enter password" ng-minlength="8" ng-maxlength="15">
     <p class='error' ng-show="loginForm.password.$error.minlength">Must be at least 8 char long</p>
     <p class='error' ng-show="loginForm.password.$error.maxlength">Must be at east 15 char long</p>
 
     <!-- <input type="button" ng-click="reset()" value="Reset"/> -->
     <button>login</button>
+    <p class="message">{{message}}</p>
   </form>
   <a href="/signup">Not a member? Sign Up</a>
 </div>

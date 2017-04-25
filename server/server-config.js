@@ -80,35 +80,34 @@ app.post('/api/login', (req, res, next) => {
       if (user === null) { // no user found in db
         next(new Error('no user found'));
       } else { // if user found
-        return user.comparePassword(password)
-        .then(isMatch => { // compare password
+        user.comparePassword(password, function(isMatch) {
           if (isMatch) { //if matched-- redirect to inventory.
             // start session
             req.session.user = user;
             res.json({session: user});
-            res
           } else {
             return next(new Error('No User'));
           }
         });
       }
     })
-    .fail(error => {
+    .catch(error => {
       next(error);
     });
 });
 
-app.post('/api/signup', (req, res, next) => {
+app.post('/signup', (req, res, next) => {
   let username = req.body.username;
   let password = req.body.password;
 
   new User({username: username}).fetch()
     .then(user => {
       if (user === null) { // add
-        Users.create({
+        var newUser = new User({
           username: username,
           password: password
-        }).save()
+        });
+        newUser.save()
           .then(user => {
             req.session.regenerate(err => {
               if (err) {
@@ -122,7 +121,7 @@ app.post('/api/signup', (req, res, next) => {
         return next(new Error('username already taken'));
       }
     })
-    .fail(error => {
+    .catch(error => {
       next(error);
     });
 });
