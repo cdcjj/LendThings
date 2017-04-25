@@ -27,6 +27,49 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+
+app.get('/inventory', (req, res) => {
+  // render inventory page
+});
+
+app.post('/inventory', (req, res) => {
+  let name = req.body.name;
+  let date = req.body.date;
+  let amount = req.body.amount;
+  let category = req.body.category;
+  let user_id = req.session.user.get('id');
+
+  new Categories({name: category}).fetch()
+    .then(catModel => {
+      if (catModel === null) {
+        // create new category
+        Categories.create({
+          name: category
+        }).save()
+          .then(catModel => {
+            category = catModel.get('id');
+          });
+      } else {
+        category = catModel.get('id');
+      }
+    })
+    .then(() => {
+      new Inventories({name: name}).fetch()
+        .then(thing => {
+          if (thing === null) {
+            // create new inventory object
+            Inventories.create({
+              name: name,
+              date: date,
+              amount: amount,
+              user_id: user_id,
+              category_id: category
+            }).save()
+          }
+        })
+    })
+});
+
 app.get('/login', (req, res) => {
   // render login page
 });
@@ -57,7 +100,9 @@ app.post('/login', (req, res) => {
 
 });
 
-
+app.get('/signup', (req, res) => {
+  // render /signup page
+})
 app.post('/signup', (req, res) => {
   let username = req.body.username;
   let password = req.body.password;
@@ -69,7 +114,11 @@ app.post('/signup', (req, res) => {
         Users.create({
           username: username,
           password: password
-        })
+        }).save()
+          .then(user => {
+            req.session.user = user;
+            res.redirect('/inventory');
+          }
       } else {
         console.log('username already taken');
         res.redirect('/signup');

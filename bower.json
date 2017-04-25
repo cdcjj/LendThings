@@ -1,0 +1,20 @@
+{
+  "name": "lendthings",
+  "version": "1.0.0",
+  "description": "\"Remember what you have or lend them\"",
+  "authors": [
+    "Doris Chiu <chihyundorischiu@gmail.com>"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.6.4"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
