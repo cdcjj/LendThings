@@ -10,7 +10,6 @@ angular.module('myApp.authenticate', [])
         $location.path('/inventory');
       })
       .catch(function(e) {
-        console.error(e);
         $scope.message = e;
       });
   };
@@ -22,8 +21,7 @@ angular.module('myApp.authenticate', [])
         $location.path('/inventory');
       })
       .catch(function(e){
-        console.error(e);
-        $scope.message = 'Try Again';
+        $scope.message = e;
       });
   };
   // reset() method that clears all fields needed here

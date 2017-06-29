@@ -137,9 +137,7 @@ app.post('/api/login', function(req, res, next) {
   User.where('username', username).fetch()
     .then(function(user) {
       if (user === null) { // no user found in db
-        console.log('usernull')
         res.json({error: true, session: 'Invalid username'});
-        // next(new Error('no user found'));
       } else { // if user found
         user.comparePassword(password, function(isMatch) {
           if (isMatch) { //if matched-- redirect to inventory.
@@ -147,7 +145,7 @@ app.post('/api/login', function(req, res, next) {
             req.session.user = user;
             res.json({error: false, session: user});
           } else {
-            return next(new Error('Incorrect password'));
+            res.json({error: true, session: 'Invalid password'});
           }
         });
       }
@@ -172,14 +170,14 @@ app.post('/signup', function(req, res, next) {
           .then(function(user) {
             req.session.regenerate(function(err) {
               if (err) {
-                return next(new Error('session error'));
+                res.json({error: true, session: 'Session error'});
               }
               req.session.user = user;
-              res.json({session: user});
+              res.json({error: false, session: user});
             });
           });
       } else {
-        return next(new Error('username already taken'));
+        res.json({error: true, session:'username already taken'});
       }
     })
     .catch(function(error) {
