@@ -1,7 +1,7 @@
-let db = require('../config');
-let Category = require('./category');
+var db = require('../config');
+var Category = require('./category');
 
-let Categories = db.Collection.extend({
+var Categories = db.Collection.extend({
   model: Category
 });
 

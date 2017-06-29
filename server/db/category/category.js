@@ -1,13 +1,13 @@
-let db = require('../config.js');
-let User = require('../user/user');
-let Inventory = require('../inventory/inventory');
+var db = require('../config.js');
+var User = require('../user/user');
+var Inventory = require('../inventory/inventory');
 
-let Category = db.Model.extend({
+var Category = db.Model.extend({
   tableName: 'category',
-  user: () => {
+  user: function() {
     this.belongsToMany(User);
   },
-  inventory: () => {
+  inventory: function() {
     this.hasMany(Inventory);
   }
 });
