@@ -2,7 +2,7 @@ let path = require('path');
 let knex = require('knex') ({
   client: 'sqlite3',
   connection: {
-    filename: path.join(__dirname, '../db/shortly.sqlite')
+    filename: path.join(__dirname, '../db/lendthings.sqlite')
   },
   useNullAsDefault: true
 });
