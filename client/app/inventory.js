@@ -1,5 +1,5 @@
 angular.module('myApp.inventory', [])
-.controller('InventoryController', function($scope, $http, $window, Category, Inventory) {
+.controller('InventoryController', function($scope, $http, $window, Auth, Category, Inventory) {
   $scope.data = {};
   $scope.inventory = {
     user_id: $window.localStorage.getItem('auth'),
@@ -50,5 +50,8 @@ angular.module('myApp.inventory', [])
         })
         $scope.data.inventory = items;
       })
+  };
+  $scope.signout = function() {
+    Auth.signout();
   };
 });

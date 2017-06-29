@@ -1,4 +1,8 @@
 <div id="container">
+  <div class="nav" ng-controller="InventoryController">
+    <h1>LendThings Inventory</h1>
+    <button ng-click='signout()'>Signout</button>
+  </div>
   <div class='sidebar category'>Categories:
     <div class="category" ng-repeat="cate in data.categories | orderBy: name">
       <p ng-click="getInventory(cate.name)">{{cate.name}}</a></p>
