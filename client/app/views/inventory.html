@@ -44,7 +44,7 @@
       <div class="info">
         <p class="name"><strong>{{ item.name }}</strong></p>
         <p class="amount">Amount: {{ item.amount}}</p>
-        <p class="date">Date: {{ item.date }}</p>
+        <p class="date">Date: {{ item.date.slice(5,7) }}-{{ item.date.slice(8, 10) }}-{{ item.date.slice(0,4) }}</p>
       </div>
     </div>
   </div>

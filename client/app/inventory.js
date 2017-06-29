@@ -12,30 +12,30 @@ angular.module('myApp.inventory', [])
       .then(function(categories) {
         $scope.data.categories = categories;
       })
-      .catch(error => {
+      .catch(function(error) {
         console.error(error);
       });
   };
 
   $scope.addCategory = function() {
     Category.addCategory($scope.category)
-      .then( () => {
+      .then(function() {
         $scope.message.category = "successfully submitted";
         initializeCategories();
       })
-      .catch(error => {
-        $scope.message.category = `submission error: ${error}`;
+      .catch(function(error) {
+        $scope.message.category = 'submission error:' + error;
       })
 
   };
 
   $scope.addInventory = function () {
     Inventory.addInventory($scope.inventory)
-      .then(() => {
+      .then(function() {
         $scope.message.inventory = "successfully submitted";
       })
-      .catch(error => {
-        $scope.message.inventory = `submission error: ${error}`;
+      .catch(function(error) {
+        $scope.message.inventory = 'submission error:' + error;
       })
   };
 
@@ -44,7 +44,10 @@ angular.module('myApp.inventory', [])
   $scope.getInventory = function(category) {
     $scope.category.name = category;
     Inventory.getAll($scope.category)
-      .then(items => {
+      .then(function(items) {
+        items.filter(function(item) {
+          $scope.category === item.category;
+        })
         $scope.data.inventory = items;
       })
   };
