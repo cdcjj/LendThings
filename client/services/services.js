@@ -1,6 +1,6 @@
 angular.module('myApp.services', [])
 .factory('Category', function($http) {
-  var getAll = function() {
+  var getAll = function(category) {
     return $http({
       method:'GET',
       url: '/api/category',
@@ -8,19 +8,18 @@ angular.module('myApp.services', [])
     .then(function(resp) {
       return resp.data;
     })
-    .catch(error => {
+    .catch(function(error) {
       throw new Error(error);
     });
   };
 
   var addCategory = function(category) {
-    console.log('in services addCate: ', typeof category);
     return $http({
       method: 'POST',
       url: '/api/category',
       data: JSON.stringify(category)
     })
-    .catch(error => {
+    .catch(function(error) {
       throw new Error(error);
     });
   }
@@ -40,9 +39,10 @@ angular.module('myApp.services', [])
       params: filterCate
     })
     .then(function(resp) {
+      console.log(resp.data);
       return resp.data;
     })
-    .catch(error => {
+    .catch(function(error){
       throw new Error(error);
     });
   };
@@ -53,7 +53,7 @@ angular.module('myApp.services', [])
       url: '/api/inventory',
       data: thing
     })
-    .catch(error => {
+    .catch(function(error) {
       throw new Error(error);
     });
   };
@@ -73,7 +73,7 @@ angular.module('myApp.services', [])
     .then(function(resp) {
       return resp.data.session.id;
     })
-    .catch(error => {
+    .catch(function(error) {
       throw new Error(error);
     });
   };
@@ -87,7 +87,7 @@ angular.module('myApp.services', [])
     .then(function(resp) {
       return resp.data.session.id;
     })
-    .catch(error => {
+    .catch(function(error) {
       throw new Error(error);
     })
   };

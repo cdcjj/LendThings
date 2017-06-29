@@ -5,11 +5,11 @@ angular.module('myApp.authenticate', [])
 
   $scope.login = function () {
     Auth.login($scope.user)
-      .then(id => {
+      .then(function(id) {
         $window.localStorage.setItem('auth', id);
         $location.path('/inventory');
       })
-      .catch(e => {
+      .catch(function(e) {
         console.error(e);
         $scope.message = 'Try Again';
       });
@@ -17,11 +17,11 @@ angular.module('myApp.authenticate', [])
 
   $scope.signup = function() {
     Auth.signup($scope.user)
-      .then(id => {
+      .then(function(id) {
         $window.localStorage.setItem('auth', id);
         $location.path('/inventory');
       })
-      .catch(e => {
+      .catch(function(e){
         console.error(e);
         $scope.message = 'Try Again';
       });
