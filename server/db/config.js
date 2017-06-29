@@ -29,7 +29,7 @@ db.knex.schema.createTableIfNotExists('inventory', function(inventory) {
   inventory.integer('user_id').unsigned();
   inventory.integer('category_id').unsigned();
   inventory.foreign('user_id').references('users.id');
-  inventory.foreign('category_id').references('users.id');
+  inventory.foreign('category_id').references('category.id');
 })
 .then(function(table) {
   console.log(`Created table: inventory ${table}`);
