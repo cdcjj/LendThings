@@ -10,6 +10,9 @@ var app = angular.module('myApp', [
     requireBase: false
   });
   $routeProvider
+  .when('/', {
+    templateUrl: "app/views/welcome.html",
+  })
   .when('/login', {
     templateUrl: "app/views/login.html",
     controller: 'AuthenticateController'
