@@ -1,18 +1,18 @@
-let express = require('express');
-let path = require('path');
-let morgan = require('morgan');
-let bodyParser = require('body-parser');
-let session = require('express-session');
+var express = require('express');
+var path = require('path');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
+var session = require('express-session');
 
-let db = require('./db/config');
-let User = require('./db/user/user');
-let Users = require('./db/user/users');
-let Category = require('./db/category/category');
-let Categories = require('./db/category/categories');
-let Inventory = require('./db/inventory/inventory');
-let Inventories = require('./db/inventory/inventories');
+var db = require('./db/config');
+var User = require('./db/user/user');
+var Users = require('./db/user/users');
+var Category = require('./db/category/category');
+var Categories = require('./db/category/categories');
+var Inventory = require('./db/inventory/inventory');
+var Inventories = require('./db/inventory/inventories');
 
-let app = express();
+var app = express();
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname + './../client/app/views'));
 app.set('view engine', 'html');
@@ -28,52 +28,52 @@ app.use(session({
 }));
 
 
-app.get('/api/category', (req, res, next) =>{
+app.get('/api/category', function(req, res, next) {
   new Category({}).fetchAll()
-    .then(categories => {
+    .then(function(categories){
       res.json(categories);
     })
-    .catch(err => {
+    .catch(function(err) {
       next();
     });
 });
 
-app.post('/api/category', (req, res, next) => {
-  let name = req.body.name;
+app.post('/api/category', function(req, res, next) {
+  var name = req.body.name;
   new Category({name: name}).fetch()
-    .then(category => {
+    .then(function(category) {
       if (category === null) {
         // create new category
         var newCategory = new Category({
           name: name
         });
         newCategory.save()
-          .then(catModel => {
+          .then(function(catModel){
             res.json(catModel);
           });
       } else {
         return next(new Error('Category Already Exists'));
       }
     })
-    .catch(error => {
+    .catch(function(error) {
       next(error);
     });
 });
 
-app.get('/api/inventory', (req, res, next) => {
-  let cat_id;
+app.get('/api/inventory', function(req, res, next) {
+  var cat_id;
 
-  new Category(req.query).fetch()
-    .then(catModel => {
+  new Category({category: req.params}).fetch()
+    .then(function(catModel) {
       if (catModel === null) {
         return next(new Error('no Category found'));
       } else {
         cat_id = catModel.get('id');
         new Inventory({category_id: cat_id }).fetchAll()
-        .then(things => {
+        .then(function(things) {
           res.json(things.models);
         })
-        .catch(err => {
+        .catch(function(err) {
           next();
         })
       }
@@ -81,31 +81,31 @@ app.get('/api/inventory', (req, res, next) => {
 
 });
 
-app.post('/api/inventory', (req, res) => {
-  let name = req.body.name;
-  let date = req.body.date;
-  let amount = req.body.amount;
-  let category = req.body.category;
-  let user_id = req.body.user_id;
+app.post('/api/inventory', function(req, res) {
+  var name = req.body.name;
+  var date = req.body.date;
+  var amount = req.body.amount;
+  var category = req.body.category;
+  var user_id = req.body.user_id;
 
   new Category({name: category}).fetch()
-    .then(catModel => {
+    .then(function(catModel) {
       if (catModel === null) {
         // create new category
         var newCategory = new Category({
           name: category
         });
         newCategory.save()
-          .then(catModel => {
+          .then(function(catModel) {
             category = catModel.get('id');
           });
       } else {
         category = catModel.get('id');
       }
     })
-    .then(() => {
+    .then(function() {
       new Inventory({name: name}).fetch()
-        .then(thing => {
+        .then(function(thing) {
           if (thing === null) {
             // create new inventory object
             var newInventory = new Inventory({
@@ -116,27 +116,27 @@ app.post('/api/inventory', (req, res) => {
               category_id: category
             });
             newInventory.save()
-            .then(inventory => {
+            .then(function(inventory) {
               res.json(inventory);
             })
           }
         })
-        .catch(error => {
+        .catch(function(error) {
           next(error);
         });
     })
-    .catch(error => {
+    .catch(function(error) {
       next(error);
     });
 });
 
-app.post('/api/login', (req, res, next) => {
-  let username = req.body.username;
-  let password = req.body.password;
+app.post('/api/login', function(req, res, next) {
+  var username = req.body.username;
+  var password = req.body.password;
 
   // query db for user
   new User({username: username}).fetch()
-    .then(user => {
+    .then(function(user) {
       if (user === null) { // no user found in db
         next(new Error('no user found'));
       } else { // if user found
@@ -151,25 +151,25 @@ app.post('/api/login', (req, res, next) => {
         });
       }
     })
-    .catch(error => {
+    .catch(function(error) {
       next(error);
     });
 });
 
-app.post('/signup', (req, res, next) => {
-  let username = req.body.username;
-  let password = req.body.password;
+app.post('/signup', function(req, res, next) {
+  var username = req.body.username;
+  var password = req.body.password;
 
   new User({username: username}).fetch()
-    .then(user => {
+    .then(function(user) {
       if (user === null) { // add
         var newUser = new User({
           username: username,
           password: password
         });
         newUser.save()
-          .then(user => {
-            req.session.regenerate(err => {
+          .then(function(user) {
+            req.session.regenerate(function(err) {
               if (err) {
                 return next(new Error('session error'));
               }
@@ -181,12 +181,12 @@ app.post('/signup', (req, res, next) => {
         return next(new Error('username already taken'));
       }
     })
-    .catch(error => {
+    .catch(function(error) {
       next(error);
     });
 });
 
-app.get('*', (req, res) => {
+app.get('*', function(req, res) {
   res.sendfile(path.join(__dirname + './../client/index.html'));
 })
 module.exports = app;
