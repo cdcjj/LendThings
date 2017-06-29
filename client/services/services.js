@@ -71,11 +71,16 @@ angular.module('myApp.services', [])
       data: user
     })
     .then(function(resp) {
+      if (resp.data.error) {
+        throw new Error(resp.data.session);
+        return;
+      }
       return resp.data.session.id;
     })
-    .catch(function(error) {
-      throw new Error(error);
-    });
+    // .catch(function(error) {
+    //   console.log(error);
+    //   throw new Error(error);
+    // });
   };
 
   var signup = function(user) {

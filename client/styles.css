@@ -60,10 +60,10 @@ body {
 }
 
 a {
-	color: white;
+	color: black;
 	font-size: 20px;
 	text-decoration-style: dotted;
-	background-color: darkblue;
+	background-color: none;
 }
 
 h1 {
@@ -187,4 +187,17 @@ form.invent {
 
 strong {
 	font-weight: 600;
+}
+
+.welcome {
+	background-color: none;
+	font-size: 20px;
+	color: white;
+	text-shadow: 1px 1px black;
+	text-align: center;
+}
+
+.welcome-a {
+	color: white;
+	text-shadow: 1px 1px black;
 }

@@ -134,18 +134,20 @@ app.post('/api/login', function(req, res, next) {
   var password = req.body.password;
 
   // query db for user
-  new User({username: username}).fetch()
+  User.where('username', username).fetch()
     .then(function(user) {
       if (user === null) { // no user found in db
-        next(new Error('no user found'));
+        console.log('usernull')
+        res.json({error: true, session: 'Invalid username'});
+        // next(new Error('no user found'));
       } else { // if user found
         user.comparePassword(password, function(isMatch) {
           if (isMatch) { //if matched-- redirect to inventory.
             // start session
             req.session.user = user;
-            res.json({session: user});
+            res.json({error: false, session: user});
           } else {
-            return next(new Error('No User'));
+            return next(new Error('Incorrect password'));
           }
         });
       }
@@ -186,6 +188,6 @@ app.post('/signup', function(req, res, next) {
 });
 
 app.get('*', function(req, res) {
-  res.sendfile(path.join(__dirname + './../client/index.html'));
+  res.sendFile(path.join(__dirname + './../client/index.html'));
 })
 module.exports = app;

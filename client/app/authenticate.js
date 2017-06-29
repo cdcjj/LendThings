@@ -11,7 +11,7 @@ angular.module('myApp.authenticate', [])
       })
       .catch(function(e) {
         console.error(e);
-        $scope.message = 'Try Again';
+        $scope.message = e;
       });
   };
 
