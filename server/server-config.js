@@ -62,14 +62,13 @@ app.post('/api/category', function(req, res, next) {
 
 app.get('/api/inventory', function(req, res, next) {
   var cat_id;
-
-  new Category({category: req.params}).fetch()
+  new Category({name: req.query.name}).fetch()
     .then(function(catModel) {
       if (catModel === null) {
         return next(new Error('no Category found'));
       } else {
         cat_id = catModel.get('id');
-        new Inventory({category_id: cat_id }).fetchAll()
+        Inventory.where('category_id', cat_id).fetchAll()
         .then(function(things) {
           res.json(things.models);
         })
